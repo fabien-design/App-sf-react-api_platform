@@ -19,7 +19,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         new Get(),
         new GetCollection(),
         
-    ]
+    ],
+    normalizationContext: ['groups' => ['product:read']],
 )]
 
 class Product
@@ -72,6 +73,13 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[Groups('product:read')]
+    private ?string $userEmail = null;
+
+    #[Groups('product:read')]
+    private ?array $userRoles = null;
+
 
     public function getId(): ?int
     {
@@ -220,7 +228,26 @@ class Product
     public function setUser(?User $user): self
     {
         $this->user = $user;
+        $this->userEmail = $user->getEmail();
+        $this->userRoles = $user->getRoles();
 
         return $this;
     }
+
+    /**
+     * Get the email of user 
+     */ 
+    public function getUserEmail(): string
+    {
+        return $this->user->getEmail();
+    }
+
+    /**
+     * Get the roles of user
+     */ 
+    public function getUserRoles(): array
+    {
+        return $this->user->getRoles();
+    }
+    
 }

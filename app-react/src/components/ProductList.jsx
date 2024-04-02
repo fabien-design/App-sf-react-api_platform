@@ -1,22 +1,19 @@
 import { Product } from "./Product";
+import { Grid } from "@mui/material";
+
 export function ProductList({ products, onDelete, onAddToCart}){
 
-    if(!products || products.length === 0) {
-        return (
-            <div>
-                <h1>No products found</h1>
-            </div>
-        );
-    }
 
     return (
-        <div className="flex gap-2 pt-8 max-w-screen flex-wrap">
-            {products.map((product) => {
+
+        <Grid container spacing={2} marginTop={5}>
+            {products?.map((product) => {
                 return (
                 <Product
                     key={product.id}
                     id={product.id}
                     name={product.name}
+                    imageName={product.imageName}
                     description={product.description}
                     price={product.price}
                     cart={product.cart}
@@ -25,6 +22,6 @@ export function ProductList({ products, onDelete, onAddToCart}){
                 />
                 );
             })}
-        </div>
+        </Grid>
     );
 }
