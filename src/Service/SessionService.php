@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Product;
 use App\Model\ShoppingCart;
 use App\Model\ShoppingCartItem;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -27,6 +28,21 @@ class SessionService
         } else {
             $shoppingCart->items->add(new ShoppingCartItem($product, 1));
         }
+
+        $this->getSession()->set(self::SHOPPING_CART, $shoppingCart);
+    }
+
+    public function removeFromShoppingCart(Product $product):void
+    {
+        $shoppingCart = $this->getShoppingCart();
+        $existingShoppingCartItem = $this->getExistingShoppingCartItem($product);
+        if (null === $existingShoppingCartItem) {
+            return;
+        } 
+        $shoppingCart->items->removeElement($existingShoppingCartItem);
+    
+        $reindexedValues = array_values($shoppingCart->items->toArray());
+        $shoppingCart->items = new ArrayCollection($reindexedValues);
 
         $this->getSession()->set(self::SHOPPING_CART, $shoppingCart);
     }

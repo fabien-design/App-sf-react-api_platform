@@ -1,13 +1,26 @@
 import { useEffect, useState } from "react";
 
-export default function useProducts(){
+export interface Product{
+    active: Boolean;
+    description: string;
+    id: number;
+    imageName: string;
+    name: string;
+    price: number;
+    userEmail: string;
+    userRoles: Array<string>;
+    cart: number;
+}
 
-    const [products, setProducts] = useState([]);
+export default function useProducts(shoppingCart, addToShoppingCart){
+
+    const [products, setProducts] = useState<Product[]>([]);
     useEffect(() => {
         fetch("http://127.0.0.1:8003/api/products")
             .then((response) => response.json())
             .then((data) => {
                 data["hydra:member"].forEach((product) => {
+                    console.log(product);
                     const newProduct = {
                         id: product.id,
                         name: product.name,
@@ -36,6 +49,7 @@ export default function useProducts(){
                 product.id === productId ? { ...product, cart: product.cart + 1 } : product
             )
         );
+        addToShoppingCart(productId);
     };
 
     const addProduct = (product) => {

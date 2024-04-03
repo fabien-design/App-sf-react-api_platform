@@ -4,8 +4,3 @@ controllers:
         namespace: App\Controller
     type: attribute
 
-
-session_add_to_shopping_cart:
-    path: session/shoppingCart/{id}
-    controllers: App\Controller\SessionController
-    methods: ["POST"]
