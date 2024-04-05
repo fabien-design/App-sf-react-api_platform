@@ -12,7 +12,7 @@ export interface Product{
     cart: number;
 }
 
-export default function useProducts(shoppingCart, addToShoppingCart){
+export default function useProducts(addToShoppingCart){
 
     const [products, setProducts] = useState<Product[]>([]);
     useEffect(() => {
@@ -44,13 +44,17 @@ export default function useProducts(shoppingCart, addToShoppingCart){
     };
 
     const onAddToCart = (productId) => {
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.id === productId ? { ...product, cart: product.cart + 1 } : product
-            )
-        );
-        addToShoppingCart(productId);
+        const productToAdd = products.find(product => product.id === productId);
+        if(productToAdd) {
+            setProducts((prevProducts) =>
+                prevProducts.map((product) =>
+                    product.id === productId ? { ...product, cart: product.cart + 1 } : product
+                )
+            );
+            addToShoppingCart(productToAdd);
+        }
     };
+    
 
     const addProduct = (product) => {
         if(!product.id){

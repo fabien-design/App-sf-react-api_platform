@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Product;
 use App\Service\SessionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,14 +23,15 @@ final class SessionController extends AbstractController{
         return $this->json($this->sessionService->getShoppingCart());
     }
 
-    #[Route("session/shopping-cart/{id}", name:"session_add_to_shopping_cart", methods:['POST'])]
-    public function addToShoppingCart(?Product $product): ?Response
+    #[Route("session/shopping-cart/{id}", name:"session_add_to_shopping_cart", methods:['GET'])]
+    public function addToShoppingCart(?Product $product, RequestStack $requestStack): ?Response
     {
         if($product){
-
+            
             $this->sessionService->addToShoppingCart($product);
             
         }
+        dd($requestStack->getSession());
 
         return $this->json($this->sessionService->getShoppingCart());
     }

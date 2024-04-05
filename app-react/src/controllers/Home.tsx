@@ -7,8 +7,8 @@ import { ProductList } from '../components/ProductList.tsx';
 
 export default function Home()
 {
-    const {addToShoppingCart, shoppingCart} = useShoppingCart();
-    const { products, onDelete, onAddToCart, addProduct } = useProducts(shoppingCart, addToShoppingCart);
+    const {  shoppingCart, addToShoppingCart, removeFromShoppingCart, loading } = useShoppingCart();
+    const { products, onDelete, onAddToCart, addProduct } = useProducts(addToShoppingCart);
 
     return (
         <>
