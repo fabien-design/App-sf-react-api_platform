@@ -29,3 +29,4 @@
 ###< lexik/jwt-authentication-bundle ###
 app-react/node_modules
 node_modules
+.env
